@@ -1,9 +1,10 @@
 class Department{
-    // private id: string;
+    // private readonly id: string;
     // private name: string;
     private employees:string[] = [];
 
-    constructor(private id:string, public name: string) {
+    // readonly: 값 변경되지않게
+    constructor(private readonly id:string, public name: string) {
         // this.id = id;
         // this.name = n;
     }
@@ -24,17 +25,48 @@ class Department{
     }
 }
 
-const accounting = new Department('d1', 'Accounting');
+class ITDepartment extends Department {
+    admins: string[];
 
-accounting.addEmployee('max');
-accounting.addEmployee('manu');
+    constructor(id: string, admins: string[]) {
+        super(id, 'IT');
+        this.admins = admins;
+    }
+}
 
-// accounting.employees[2] = 'anna'; // private속성은 이렇게 접근할수없다
+class AccountingDepartment extends Department {
+    constructor(id: string, private reports: string[]) {
+        super(id, 'IT');
+    }
 
-accounting.describe(); // accounting 객체 참조
-accounting.name = 'new name';
-accounting.printEmployeeInformation();
+    addReport(text: string) {
+        this.reports.push(text);   
+    }
 
-// const accountingCopy = { name: 's', describe: accounting.describe };
+    printReports() {
+        console.log(this.reports);
+    }
+}
 
-// accountingCopy.describe();
+const it = new ITDepartment('d1', ['max']);
+
+it.addEmployee('max');
+it.addEmployee('manu');
+
+// it.employees[2] = 'anna'; // private속성은 이렇게 접근할수없다
+
+it.describe(); // it 객체 참조
+it.name = 'new name';
+it.printEmployeeInformation();
+
+console.log(it);
+
+const accounting = new AccountingDepartment('d2', []);
+
+accounting.addReport('somthing');
+
+accounting.printReports();
+
+// const itCopy = { name: 's', describe: it.describe };
+
+// itCopy.describe();
